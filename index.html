@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>room_management</title>
+    <link rel="stylesheet" type="" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <body>
+    <div id="app">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-3 col_edit">
+            <h1>房間資料</h1>
+            <hr>
+            <h3>額外費用</h3>
+            <label>Discount</label>
+            <input v-model="discount" class="form-control">
+            <label>Service fee</label>
+            <input v-model="service_fee" class="form-control">
+            <hr>
+            <h3>編輯房間</h3>
+            <div class="room_edit" @click="add_room">
+              <button class="btn btn-success btn-sm" style="width: 100%;">+ 新增房間</button>
+            </div>
+            <br>
+            <select class="form-control" v-model="selected_id">
+              <option v-for="(r, id) in rooms" :value="id">{{r.name}}</option>
+            </select>
+            <div class="room_edit" v-for="(room, id) in [rooms[selected_id]]">
+              <h4>
+                {{room.name}}
+                <i class="fa fa-times pull-right" @click="delete_room(selected_id)"></i>
+              </h4>
+              <input v-model="room.name" class="form-control" placeholder="Room name">
+              <input v-model="room.eng" class="form-control" placeholder="Room english name">
+              <input v-model="room.discount" class="form-control" placeholder="Room discount">
+              <input v-model="room.price" class="form-control" placeholder="Room price">
+              <input v-model="room.cover" class="form-control" placeholder="Room cover picture">
+            </div>
+          </div>
+          <div class="col-sm-9">
+            <h1>房間列表</h1>
+            <hr>
+            <div class="row">
+              <div class="col-sm-4 col_room" v-for="room in rooms">
+                <room :room_data="room" 
+                      :hotel_discount="discount" 
+                      :hotel_fee="service_fee"
+                      :delete_room="delete_room"
+                      :id="id"></room>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <template id="room">
+      <div class="room_container">
+        <div class="cover" v-bind:style="bg_css">
+          <h3>{{room_data.name}}</h3>
+          <i class="fa fa-times cover_del" @click="delete_room(id)"></i>
+        </div>
+        <div class="info">
+          <h5>{{room_data.eng}}</h5>
+          <h5>{{room_data.discount}} x {{hotel_discount}} = {{final_discount_show}} 折</h5>
+          <h4>TWD
+            <s>{{room_data.price}}</s>
+            <div class="final_price">
+              <span>{{final_price}}</span>
+            </div>
+          </h4>
+        </div>
+      </div>
+    </template>
+
+  </body>
+  <style>
+    *{
+      /*border: solid 1px;*/
+    }
+    .col_room{
+      padding: 20px;
+    }
+    .room_container{
+      box-shadow: 0 0 10px rgba(0,0,0,.3);
+      cursor: pointer;
+      transition: .2s ease-in;
+    }
+    .room_container:hover{
+      transform: translate(-5px, -5px);
+      box-shadow: 2px 2px 10px rgba(0,0,0,.8);
+    }
+    .room_container:hover .cover{
+      background-size: 110% auto;
+    }
+    .room_container .cover{
+      height: 150px;
+      position: relative;
+      background-size: 100% auto;
+      background-position: center center;
+      transition: .2s ease-in;
+    }
+    .room_container .cover h3{
+      position: absolute;
+      bottom: 10px;
+      font-size: 20px;
+      padding: 5px 15px;
+      background-color: #2772A4;
+      color: white;
+      font-weight: 200;
+      box-shadow: 1px 1px 3px rgba(0,0,0,.3); 
+    }
+    .room_container .info{
+      padding: 10px;
+    }
+    .room_container .info h5{
+      font-size: 12px;
+    }
+    .room_container .info .final_price{
+      float: right;
+      color: red;
+      font-size: 30px;
+    }
+    .room_container .info .final_price:before{
+      content: "$ "
+    }
+    .col_edit{
+      height: 100vh;
+      overflow-y: scroll;
+    }
+    .room_edit{
+      margin-top: 30px;
+    }
+    .cover_del{
+      position: absolute;
+      color: rgba(0,0,0,.3);
+      right: 15px;
+      top: 15px;
+      cursor: pointer;
+      transition: .3s;
+    }
+    .cover_del:hover{
+      color: red;
+    }
+
+  </style>
+</html>

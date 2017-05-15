@@ -43,7 +43,7 @@
             <h1>房間列表</h1>
             <hr>
             <div class="row">
-              <div class="col-sm-4 col_room" v-for="room in rooms">
+              <div class="col-sm-4 col_room" v-for="(room, id) in rooms">
                 <room :room_data="room" 
                       :hotel_discount="discount" 
                       :hotel_fee="service_fee"

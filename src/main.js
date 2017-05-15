@@ -115,7 +115,7 @@ var rooms = [
 
 Vue.component("room",{
   template: "#room", 
-  props: ["room_data", "hotel_discount", "hotel_fee", "delete_room"],
+  props: ["room_data", "hotel_discount", "hotel_fee", "delete_room", "id"],
   computed: {
     final_discount() {
       //計算總折扣數（小數點兩位）x100
